@@ -21,9 +21,18 @@
 
     <section class="container">
         <form id="citySearch">
-            <input type="text" placeholder="search for city">
+            <input type="text" placeholder="search for city" autofocus id="cityInput">
+            <button type="submit" id="submitBtn">SUBMIT</button>
+            <span class="msg"></span>
         </form>
     </section>
+
+    <section class="querySection">
+        <div class="container">
+            <ul class="cities"></ul>
+        </div>
+    </section>
+
     
 </body>
 <!-- JavaScript Bundle with Popper -->
