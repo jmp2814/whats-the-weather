@@ -54,6 +54,7 @@ function citySubmit(event) {
     fetchLocation(inputEl.value);
     current.removeAttribute("hidden");
     cityAdd();
+    document.getElementById("citySearch").reset();
     // var ul = cityList;
     // var li = document.createElement("button");
     // li.innerHTML = inputEl.value;
