@@ -5,3 +5,25 @@ header {
     padding: 5px 0 2px 0;
     margin-bottom: 5px;
 }
+
+.list {
+    list-style: none;
+}
+
+#search-section {
+    display: flex;
+    flex-wrap: wrap;
+    flex-direction: column;
+}
+
+#curr-city-cond {
+    border: 3px;
+    border-style: solid;
+    border-color: black;
+    padding: 4px;
+    margin: 3px 0px 3px 0px;
+
+}
+
+
+
