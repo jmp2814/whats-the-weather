@@ -2,7 +2,9 @@ var submitEl = document.querySelector("#submitBtn");
 var inputEl = document.querySelector("#cityInput");
 var msgEl = document.querySelector(".msg");
 var cityList = document.querySelector("#prev-city");
+var current = document.querySelector("#curr-city");
 var city;
+var cityLi = "";
 const APIkey = "a624cbc58502929687c870d48d2bc712";
 const baseAPIurl = "https://api.openweathermap.org";
 
@@ -37,6 +39,8 @@ function fetchWeather(latitude, longitude) {
             document.getElementById("wind-span").innerText=data.current.wind_speed + " MPH";
             document.getElementById("humi-span").innerText=data.current.humidity;
             document.getElementById("uv-span").innerText=data.current.uvi;
+
+            document.getElementById("day1").innerText=data.daily[0].weather.icon;
         
         })
 
@@ -48,6 +52,7 @@ function citySubmit(event) {
     console.log(event);
     console.log(inputEl.value);
     fetchLocation(inputEl.value);
+    current.removeAttribute("hidden");
     cityAdd();
     // var ul = cityList;
     // var li = document.createElement("button");
@@ -67,5 +72,15 @@ function cityAdd() {
     cityLi.classList.add("prevCityBtn");
 }
 
+function reCitySubmit(event) {
+    event.preventDefault();
+    inputEl = cityLi.innerText;
+    // console.log(event);
+    // console.log(inputEl.value);
+    // fetchLocation(inputEl.value);
+    citySubmit();
+}
+
+// cityLi.addEventListener("click", reCitySubmit);
 submitEl.addEventListener("click", citySubmit);
 

@@ -29,18 +29,26 @@
                 <span class="msg"></span>
             </form>
             <div class="container list-hold justify-content-start">
-                <ul class="list col-2 justify-content-start" id="prev-city"></ul>
+                <ul class="list col-2" id="prev-city"></ul>
             </div>
         </section>
 
 
-        <section class="container col-4" id="curr-city">
+        <section hidden class="container col-4" id="curr-city">
             <ul class="list" id="curr-city-cond">
                 <li>Temp: <span id="temp-span"></span></li>
                 <li>Wind: <span id="wind-span"></span></li>
                 <li>Humidity: <span id="humi-span"></span></li>
                 <li>UV Index: <span id="uv-span"></span></li>
             </ul>
+        </section>
+
+        <section class="container" id="fiveDayBox">
+            <div class="fiveDay" id="day1"></div>
+            <div class="fiveDay" id="day2"></div>
+            <div class="fiveDay" id="day3"></div>
+            <div class="fiveDay" id="day4"></div>
+            <div class="fiveDay" id="day5"></div>
         </section>
 
         <script src="script.js"></script>

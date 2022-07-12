@@ -10,10 +10,17 @@ header {
     list-style: none;
 }
 
+.list-hold {
+    display: flex;
+    flex-wrap: wrap;
+    flex-direction: column;
+}
+
 #search-section {
     display: flex;
     flex-wrap: wrap;
     flex-direction: column;
+    margin-left: 3px;
 }
 
 #curr-city-cond {
@@ -23,6 +30,12 @@ header {
     padding: 4px;
     margin: 3px 0px 3px 0px;
 
+}
+
+.prevCityBtn {
+    background-color: lightblue;
+    color: black;
+    margin: 3px;
 }
 
 
