@@ -35,12 +35,12 @@ function fetchWeather(latitude, longitude) {
         .then(function (data) {
             // var supText = "o";
             console.log(data);
-            document.getElementById("temp-span").innerText=data.current.temp;
+            document.getElementById("temp-span").innerText=data.current.temp + " ℉";
             document.getElementById("wind-span").innerText=data.current.wind_speed + " MPH";
             document.getElementById("humi-span").innerText=data.current.humidity;
             document.getElementById("uv-span").innerText=data.current.uvi;
 
-            document.getElementById("day1").innerText=data.daily[0].weather.icon;
+            document.getElementById("day1").innerText=data.daily[0];
         
         })
 
