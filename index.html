@@ -1,67 +1,100 @@
 <!DOCTYPE html>
 <html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta http-equiv="X-UA-Compatible" content="IE=edge" />
+    <meta
+      name="viewport"
+      content="width=device-width, initial-scale=1.0, shrink-to-fit=no"
+    />
+    <title>Weather?</title>
+    <link rel="stylesheet" href="assets/reset.css" />
+    <link
+      href="https://cdn.jsdelivr.net/npm/bootstrap@5.2.0-beta1/dist/css/bootstrap.min.css"
+      rel="stylesheet"
+      integrity="sha384-0evHe/X+R7YkIZDRvuzKMRqM+OrBnVFBL6DOitfPri4tjfHxaWutUpFmBp4vmVor"
+      crossorigin="anonymous"
+    />
+    <link rel="stylesheet" href="style.css" />
 
-    <head>
-        <meta charset="UTF-8">
-        <meta http-equiv="X-UA-Compatible" content="IE=edge">
-        <meta name="viewport" content="width=device-width, initial-scale=1.0">
-        <title>Weather?</title>
+    <!-- <link rel="stylesheet" href="https://code.jquery.com/ui/1.13.1/themes/base/jquery-ui.css"/> -->
+  </head>
 
-        <link rel="stylesheet" href="style.css" />
+  <body>
+    <header class="container">
+      <div class="jumbotron">
+        <h1 class="display-5">What's The Weather Like in...?</h1>
+      </div>
+    </header>
 
-        <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.2.0-beta1/dist/css/bootstrap.min.css" rel="stylesheet"
-        integrity="sha384-0evHe/X+R7YkIZDRvuzKMRqM+OrBnVFBL6DOitfPri4tjfHxaWutUpFmBp4vmVor" crossorigin="anonymous">
-
-        <!-- <link rel="stylesheet" href="https://code.jquery.com/ui/1.13.1/themes/base/jquery-ui.css"/> -->
-
-
-    </head>
-
-    <body>
-        <header>
-            <h1><strong>What's The Weather?</strong></h1>
-        </header>
-
-        <section class="container" id="search-section">
-            <form id="citySearch">
-                <input type="text" placeholder="search for city" autofocus id="cityInput">
-                <button type="submit" id="submitBtn">SUBMIT</button>
-                <span class="msg"></span>
-            </form>
-            <div class="container list-hold justify-content-start">
-                <ul class="list col-2" id="prev-city"></ul>
+    <main class="container">
+      <div id="top-container" class="container">
+        <section id="searchContainer" class="container">
+          <h1>Please enter a city:</h1>
+          <div class="input-group mb-3">
+            <input
+              id="cityName"
+              type="text"
+              class="form-control"
+              placeholder="City Name"
+            />
+            <div class="input-group-append">
+              <button class="btn btn-primary" type="button">Search</button>
             </div>
+          </div>
         </section>
+        <section id="previousResultsContainer" class="container"></section>
+      </div>
+      <div id="bottom-container" class="container hiden">
+        <div id="searchResultContainer" class="container">
+          <div id="current-weather-wrapper" class="container">
+            <p id="weather-title">Today</p>
+            <section id="weatherSection" class="container card"></section>
+          </div>
+        </div>
+      </div>
+    </main>
 
+    <script src="script.js"></script>
+    <!-- <section class="container" id="search-section">
+      <form id="citySearch">
+        <input
+          type="text"
+          placeholder="search for city"
+          autofocus
+          id="cityInput"
+        />
+        <button type="submit" id="submitBtn">SUBMIT</button>
+        <span class="msg"></span>
+      </form>
+      <div class="container list-hold justify-content-start">
+        <ul class="list col-2" id="prev-city"></ul>
+      </div>
+    </section>
 
-        <section hidden class="container col-4" id="curr-city">
-            <ul class="list" id="curr-city-cond">
-                <li>Temp: <span id="temp-span"></span></li>
-                <li>Wind: <span id="wind-span"></span></li>
-                <li>Humidity: <span id="humi-span"></span></li>
-                <li>UV Index: <span id="uv-span"></span></li>
-            </ul>
-        </section>
+    <section hidden class="container col-4" id="curr-city">
+      <ul class="list" id="curr-city-cond">
+        <li>Temp: <span id="temp-span"></span></li>
+        <li>Wind: <span id="wind-span"></span></li>
+        <li>Humidity: <span id="humi-span"></span></li>
+        <li>UV Index: <span id="uv-span"></span></li>
+      </ul>
+    </section>
 
-        <section class="container" id="fiveDayBox">
-            <div class="fiveDay" id="day1"></div>
-            <div class="fiveDay" id="day2"></div>
-            <div class="fiveDay" id="day3"></div>
-            <div class="fiveDay" id="day4"></div>
-            <div class="fiveDay" id="day5"></div>
-        </section>
+    <section class="container" id="fiveDayBox">
+      <div class="fiveDay" id="day1"></div>
+      <div class="fiveDay" id="day2"></div>
+      <div class="fiveDay" id="day3"></div>
+      <div class="fiveDay" id="day4"></div>
+      <div class="fiveDay" id="day5"></div>
+    </section> -->
 
-        <script src="script.js"></script>
-        <!-- <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.2.0-beta1/dist/js/bootstrap.bundle.min.js"
+    <!-- <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.2.0-beta1/dist/js/bootstrap.bundle.min.js"
         integrity="sha384-pprn3073KE6tl6bjs2QrFaJGz5/SUsLqktiwsUTF55Jfv3qYSDhgCecCxMW52nD2"
         crossorigin="anonymous"></script> -->
-    
-        <!-- <script src="https://code.jquery.com/jquery-3.6.0.min.js" integrity="sha256-/xUj+3OJU5yExlq6GSYGSHk7tPXikynS7ogEvDej/m4=" crossorigin="anonymous"></script>
+
+    <!-- <script src="https://code.jquery.com/jquery-3.6.0.min.js" integrity="sha256-/xUj+3OJU5yExlq6GSYGSHk7tPXikynS7ogEvDej/m4=" crossorigin="anonymous"></script>
     
         <script src="https://code.jquery.com/ui/1.13.1/jquery-ui.min.js" integrity="sha256-eTyxS0rkjpLEo16uXTS0uVCS4815lc40K2iVpWDvdSY=" crossorigin="anonymous"></script> -->
-    </body>
-
-
-
-
+  </body>
 </html>
