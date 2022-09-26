@@ -19,3 +19,6 @@ SO THAT I can plan a trip accordingly
 - THEN I am again presented with current and future conditions for that city
 
 ### Screenshots
+![home](https://user-images.githubusercontent.com/103081923/192301257-c2de497e-8ec4-489b-9657-e186578b79b8.JPG)
+![searchOne](https://user-images.githubusercontent.com/103081923/192301261-ab94f856-71b6-4061-8e2e-7a402c1f2746.JPG)
+![searchTwo](https://user-images.githubusercontent.com/103081923/192301262-d2861157-1f76-4440-94a7-a471325b83d5.JPG)
