@@ -1,89 +1,308 @@
-var submitEl = document.querySelector("#submitBtn");
-var inputEl = document.querySelector("#cityInput");
-var msgEl = document.querySelector(".msg");
-var cityList = document.querySelector("#prev-city");
-var current = document.querySelector("#curr-city");
-var city;
-var cityLi = "";
-const APIkey = "a624cbc58502929687c870d48d2bc712";
-const baseAPIurl = "https://api.openweathermap.org";
+var myPreviousResultsContainer = document.querySelector(
+  "#previousResultsContainer"
+);
+var myBottomContainer = document.querySelector("#bottom-container");
+var myWeatherResultsContainer = document.querySelector(
+  "#searchResultContainer"
+);
+var myWeatherApiContainer = document.querySelector("#weatherSection");
+var myForecastContainer = document.querySelector("#forecast");
+var mySearchButton = document.querySelector(".btn");
+var myCity = document.querySelector("#cityName");
 
-function fetchLocation(searchText) {
-    const apiUrl = `${baseAPIurl}/geo/1.0/direct?q=${searchText}&limit=5&appid=${APIkey}`;
-    fetch(apiUrl)
-        .then(function (response) {
-            return response.json();
-        })
-        .then(function (data) {
-            console.log("Data is: ", data);
-            if (!data[0]) {
-                alert("Location not found!");
-                return;
-            }
-            fetchWeather(data[0].lat, data[0].lon)
-        })
+// confirm local storage exists
+function doesLocalStorageExist() {
+  if (localStorage.getItem("myRecentSearches") !== null) {
+    return true;
+  } else {
+    return false;
+  }
 }
 
-function fetchWeather(latitude, longitude) {
-
-    var queryURL = `${baseAPIurl}/data/2.5/onecall?lat=${latitude}&lon=${longitude}&exclude=hourly,minutely&units=imperial&appid=${APIkey}`;
-
-    fetch(queryURL)
-        .then(function (resonse) {
-            return resonse.json();
-        })
-        .then(function (data) {
-            // var supText = "o";
-            console.log(data);
-            document.getElementById("temp-span").innerText=data.current.temp + " ℉";
-            document.getElementById("wind-span").innerText=data.current.wind_speed + " MPH";
-            document.getElementById("humi-span").innerText=data.current.humidity + " %";
-            document.getElementById("uv-span").innerText=data.current.uvi;
-
-            
-            
-            document.getElementById("day1").innerText=data.daily[0].temp.day;
-        
-        })
-
+// show the weather container
+function showWeatherContainer() {
+  myBottomContainer.classList.remove("hidden");
 }
 
-function citySubmit(event) {
+function resetWeatherAndCities() {
+  var numSearches = myPreviousResultsContainer.children.length;
+  for (var i = 0; i < numSearches; i++) {
+    myPreviousResultsContainer.children[0].remove();
+  }
 
+  var weather = myWeatherApiContainer.children.length;
+  for (var i = 0; i < weather; i++) {
+    myWeatherApiContainer.children[0].remove();
+  }
+
+  var forecast = myForecastContainer.children.length;
+  for (var i = 0; i < forecast; i++) {
+    myForecastContainer.children[0].remove();
+  }
+}
+
+// Create and append recent search button to myPreviousResultsContainer
+function addRecentSearchButton(city, container) {
+  var searchButton = document.createElement("button");
+  searchButton.textContent = city;
+  searchButton.classList.add("previous", "btn", "btn-secondary");
+  container.appendChild(searchButton);
+}
+
+// Retrieve previous search results and display them on screen
+function displayMySearchResults(myContainer) {
+  var currentLocalStorage = JSON.parse(
+    localStorage.getItem("myRecentSearches")
+  );
+  for (var i = 0; i < currentLocalStorage.length; i++) {
+    addRecentSearchButton(currentLocalStorage[i], myContainer);
+  }
+}
+
+// Store Successful Searches in localStorage
+function storeSuccessfulSearch(cityName, resultsContainer) {
+  var tempStorageArray = [];
+  if (doesLocalStorageExist()) {
+    var currentLocalStorage = JSON.parse(
+      localStorage.getItem("myRecentSearches")
+    );
+    if (currentLocalStorage.includes(cityName)) {
+      displayMySearchResults(resultsContainer);
+      return;
+    }
+    for (var i = 0; i < currentLocalStorage.length; i++) {
+      tempStorageArray.push(currentLocalStorage[i]);
+    }
+    tempStorageArray.push(cityName);
+    if (tempStorageArray.length > 5) {
+      tempStorageArray.shift();
+    }
+    localStorage.setItem("myRecentSearches", JSON.stringify(tempStorageArray));
+    displayMySearchResults(resultsContainer);
+    return;
+  }
+  tempStorageArray.push(cityName);
+  addRecentSearchButton(tempStorageArray[0], resultsContainer);
+  localStorage.setItem("myRecentSearches", JSON.stringify(tempStorageArray));
+}
+
+function getUsableDate(unixtimestamp) {
+  var myTempTime = unixtimestamp * 1000;
+  var dateObject = new Date(myTempTime);
+  var convertedDate = dateObject.toLocaleString("en-US", {
+    timeZoneName: "short",
+  });
+  var usableDate = convertedDate.split(",");
+  return usableDate[0];
+}
+// Assign the appropriate style to UV Index
+function setUVStlye(uvi, container) {
+  if (uvi >= 0.0 && uvi < 3.0) {
+    container.style.backgroundColor = "green";
+    container.style.color = "white";
+    return;
+  } else if (uvi >= 3.0 && uvi < 6.0) {
+    container.style.backgroundColor = "yellow";
+    container.style.color = "black";
+    return;
+  } else if (uvi >= 6.0 && uvi < 8.0) {
+    container.style.backgroundColor = "orange";
+    container.style.color = "black";
+    return;
+  } else if (uvi >= 8.0 && uvi < 11.0) {
+    container.style.backgroundColor = "red";
+    container.style.color = "white";
+    return;
+  } else {
+    container.style.backgroundColor = "purple";
+    container.style.color = "white";
+  }
+}
+
+// Add supplied information to an html element
+function addInfoToHTML(info, place, hasImage, alt) {
+  if (hasImage) {
+    var myCityTitle = document.createElement("div");
+    var myCityDate = document.createElement("p");
+    var myCityImage = document.createElement("img");
+    myCityTitle.classList.add("container", "weather-image");
+    myCityDate.textContent = info;
+    myCityImage.setAttribute(
+      "src",
+      "https://openweathermap.org/img/wn/" + hasImage + "@2x.png"
+    );
+    myCityImage.setAttribute("alt", alt);
+    myCityTitle.appendChild(myCityDate);
+    myCityTitle.appendChild(myCityImage);
+    place.appendChild(myCityTitle);
+    return;
+  } else if (info.includes("UV")) {
+    var myUVContainer = document.createElement("div");
+    var myUVFillerText = document.createElement("p");
+    var myIndexContainer = document.createElement("div");
+    var myUVIndex = document.createElement("p");
+
+    myUVContainer.classList.add("container");
+    myUVFillerText.textContent = info.split(":")[0] + ": ";
+    myUVIndex.textContent = info.split(":")[1];
+    myIndexContainer.appendChild(myUVIndex);
+    setUVStlye(myUVIndex.textContent, myIndexContainer);
+    myIndexContainer.classList.add("UV-Index");
+    myUVContainer.appendChild(myUVFillerText);
+    myUVContainer.appendChild(myIndexContainer);
+    place.appendChild(myUVContainer);
+    return;
+  }
+  var myElement = document.createElement("p");
+  myElement.textContent = info;
+  place.appendChild(myElement);
+}
+
+// Create, populate and add Forecast Cards to HTML
+function createForecastCard(date, image, temp, wind, hum, alt) {
+  // Card Element variables
+  var myCard = document.createElement("div");
+  var myCardBody = document.createElement("div");
+  var myCardTitle = document.createElement("h5");
+  var myCardImage = document.createElement("img");
+  var myCardTemp = document.createElement("p");
+  var myCardWind = document.createElement("p");
+  var myCardHum = document.createElement("p");
+
+  // Add necessary Bootstrap classes to elements
+  myCard.classList.add("card", "text-white", "bg-primary", "mb-3");
+  myCardBody.classList.add("card-body");
+  myCardTitle.classList.add("card-title");
+
+  // Add information to Card Header
+  myCardTitle.textContent = date;
+  myCardBody.appendChild(myCardTitle);
+
+  // Add image to Card Title
+  myCardImage.setAttribute(
+    "src",
+    "https://openweathermap.org/img/wn/" + image + "@2x.png"
+  );
+  myCardImage.setAttribute("alt", alt);
+  myCardBody.appendChild(myCardImage);
+
+  // Add rest of info to Card
+  myCardTemp.textContent = temp;
+  myCardBody.appendChild(myCardTemp);
+  myCardWind.textContent = wind;
+  myCardBody.appendChild(myCardWind);
+  myCardHum.textContent = hum;
+  myCardBody.appendChild(myCardHum);
+
+  // Add to the myForecastContainer
+  myCard.appendChild(myCardTitle);
+  myCard.appendChild(myCardBody);
+  myForecastContainer.appendChild(myCard);
+}
+
+// Get the supplied city's coordinates and then get the current weather
+function callAPI() {
+  resetWeatherAndCities();
+  fetch(
+    "https://api.openweathermap.org/geo/1.0/direct?q=" +
+      myCity.value +
+      "&limit=1&appid=a624cbc58502929687c870d48d2bc712",
+    {}
+  )
+    // Take response from fetch and parse to JSON
+    .then(function (response) {
+      return response.json();
+    })
+    // Take parsed response in as data and extract lat and lon, store it and return coordinates object
+    .then(function (data) {
+      console.log(data);
+      var coordinates = {
+        lat: data[0].lat,
+        lon: data[0].lon,
+      };
+      storeSuccessfulSearch(data[0].name, myPreviousResultsContainer);
+      return coordinates;
+    })
+    // Get coordinates from previous .then function and pass it into this new fetch request then create our weather information and add it to our html
+    .then(function (getWeather) {
+      return fetch(
+        "https://api.openweathermap.org/data/2.5/onecall?lat=" +
+          getWeather.lat +
+          "&lon=" +
+          getWeather.lon +
+          "&units=Imperial&appid=a624cbc58502929687c870d48d2bc712",
+        {}
+      );
+    })
+    // Take response from fetch and parse to JSON
+    .then(function (response) {
+      return response.json();
+    })
+    // Take weather data and populate HTML with information
+    .then(function (data) {
+      console.log(data);
+      for (var i = 1; i < 6; i++) {
+        var myDate = getUsableDate(data.daily[i].dt);
+        var myIMG = data.daily[i].weather[0].icon;
+        var myTemp = "Temp: " + data.daily[i].temp.day + "\xB0F";
+        var myWind = "Wind Speed: " + data.daily[i].wind_speed + "MPH";
+        var myHumidity = "Humidity: " + data.daily[i].humidity + "%";
+        var myAltText = data.daily[i].weather[0].description;
+        createForecastCard(
+          myDate,
+          myIMG,
+          myTemp,
+          myWind,
+          myHumidity,
+          myAltText
+        );
+      }
+      addInfoToHTML(
+        myCity.value + " " + getUsableDate(data.current.dt),
+        myWeatherApiContainer,
+        data.current.weather[0].icon,
+        data.current.weather[0].description
+      );
+      addInfoToHTML(
+        "Temp: " + data.current.temp + "\xB0F",
+        myWeatherApiContainer
+      );
+      addInfoToHTML(
+        "Wind Speed: " + data.current.wind_speed + "MPH",
+        myWeatherApiContainer
+      );
+      addInfoToHTML(
+        "Humidity: " + data.current.humidity + "%",
+        myWeatherApiContainer
+      );
+      addInfoToHTML("UV Index:" + data.current.uvi, myWeatherApiContainer);
+      showWeatherContainer();
+    });
+}
+
+// If user enters input and presses "ENTER" call the click function on mySearchButton
+myCity.addEventListener("keypress", function (event) {
+  if (event.key === "Enter") {
     event.preventDefault();
-    console.log(event);
-    console.log(inputEl.value);
-    fetchLocation(inputEl.value);
-    current.removeAttribute("hidden");
-    cityAdd();
-    document.getElementById("citySearch").reset();
-    // var ul = cityList;
-    // var li = document.createElement("button");
-    // li.innerHTML = inputEl.value;
-    // ul.appendChild(li);
+    mySearchButton.click();
+  }
+});
 
+// Event Delegate for Previous Searches
+myPreviousResultsContainer.onclick = function (event) {
+  var myButton = event.target;
 
+  if (myButton.classList.contains("previous")) {
+    myCity.value = myButton.textContent;
+    myCity.setAttribute("placeholder", myButton.textContent);
+    callAPI();
+  }
+};
+
+// If localstorage exists display recent searches
+if (doesLocalStorageExist()) {
+  displayMySearchResults(myPreviousResultsContainer);
 }
 
-// function to create button for previously searched cities and add it to a list below search bar
-
-function cityAdd() {
-    var cityUl = cityList
-    var cityLi = document.createElement("button");
-    cityLi.innerHTML = inputEl.value;
-    cityUl.appendChild(cityLi)
-    cityLi.classList.add("prevCityBtn");
-}
-
-function reCitySubmit(event) {
-    event.preventDefault();
-    inputEl = cityLi.innerText;
-    // console.log(event);
-    // console.log(inputEl.value);
-    // fetchLocation(inputEl.value);
-    citySubmit();
-}
-
-// cityLi.addEventListener("click", reCitySubmit);
-submitEl.addEventListener("click", citySubmit);
-
+// If user clicks Search button then execute callAPI()
+mySearchButton.addEventListener("click", callAPI);

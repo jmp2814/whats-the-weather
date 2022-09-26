@@ -15,9 +15,7 @@
       integrity="sha384-0evHe/X+R7YkIZDRvuzKMRqM+OrBnVFBL6DOitfPri4tjfHxaWutUpFmBp4vmVor"
       crossorigin="anonymous"
     />
-    <link rel="stylesheet" href="style.css" />
-
-    <!-- <link rel="stylesheet" href="https://code.jquery.com/ui/1.13.1/themes/base/jquery-ui.css"/> -->
+    <link rel="stylesheet" href="assets/style.css" />
   </head>
 
   <body>
@@ -51,50 +49,24 @@
             <p id="weather-title">Today</p>
             <section id="weatherSection" class="container card"></section>
           </div>
+          <div id="forecast-wrapper" class="container">
+            <p>5-Day Forecast</p>
+            <section id="forecast" class="container-fluid"></section>
+          </div>
         </div>
       </div>
     </main>
-
+    <link
+      href="https://cdn.jsdelivr.net/npm/bootstrap@5.2.1/dist/css/bootstrap.min.css"
+      rel="stylesheet"
+      integrity="sha384-iYQeCzEYFbKjA/T2uDLTpkwGzCiq6soy8tYaI1GyVh/UjpbCx/TYkiZhlZB6+fzT"
+      crossorigin="anonymous"
+    />
+    <script
+      src="https://cdn.jsdelivr.net/npm/bootstrap@5.2.1/dist/js/bootstrap.bundle.min.js"
+      integrity="sha384-u1OknCvxWvY5kfmNBILK2hRnQC3Pr17a+RTT6rIHI7NnikvbZlHgTPOOmMi466C8"
+      crossorigin="anonymous"
+    ></script>
     <script src="script.js"></script>
-    <!-- <section class="container" id="search-section">
-      <form id="citySearch">
-        <input
-          type="text"
-          placeholder="search for city"
-          autofocus
-          id="cityInput"
-        />
-        <button type="submit" id="submitBtn">SUBMIT</button>
-        <span class="msg"></span>
-      </form>
-      <div class="container list-hold justify-content-start">
-        <ul class="list col-2" id="prev-city"></ul>
-      </div>
-    </section>
-
-    <section hidden class="container col-4" id="curr-city">
-      <ul class="list" id="curr-city-cond">
-        <li>Temp: <span id="temp-span"></span></li>
-        <li>Wind: <span id="wind-span"></span></li>
-        <li>Humidity: <span id="humi-span"></span></li>
-        <li>UV Index: <span id="uv-span"></span></li>
-      </ul>
-    </section>
-
-    <section class="container" id="fiveDayBox">
-      <div class="fiveDay" id="day1"></div>
-      <div class="fiveDay" id="day2"></div>
-      <div class="fiveDay" id="day3"></div>
-      <div class="fiveDay" id="day4"></div>
-      <div class="fiveDay" id="day5"></div>
-    </section> -->
-
-    <!-- <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.2.0-beta1/dist/js/bootstrap.bundle.min.js"
-        integrity="sha384-pprn3073KE6tl6bjs2QrFaJGz5/SUsLqktiwsUTF55Jfv3qYSDhgCecCxMW52nD2"
-        crossorigin="anonymous"></script> -->
-
-    <!-- <script src="https://code.jquery.com/jquery-3.6.0.min.js" integrity="sha256-/xUj+3OJU5yExlq6GSYGSHk7tPXikynS7ogEvDej/m4=" crossorigin="anonymous"></script>
-    
-        <script src="https://code.jquery.com/ui/1.13.1/jquery-ui.min.js" integrity="sha256-eTyxS0rkjpLEo16uXTS0uVCS4815lc40K2iVpWDvdSY=" crossorigin="anonymous"></script> -->
   </body>
 </html>
