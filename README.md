@@ -19,3 +19,7 @@ SO THAT I can plan a trip accordingly
 - THEN I am again presented with current and future conditions for that city
 
 ### Screenshots
+
+![HomeScreen](assets\images\home.JPG)
+![SearchOne](assets\images\searchOne.JPG)
+![SearchTwo](assets\images\searchTwo.JPG)
